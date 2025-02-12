@@ -94,3 +94,48 @@ threading.Thread(target=keyboard_listener, daemon=True).start()
 
 # Запускаємо Tkinter
 root.mainloop()
+
+
+@echo off
+
+REM Check if Python is installed
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Python is not installed. Downloading and installing Python...
+    REM Download and install Python
+    powershell -Command "Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe -OutFile python-installer.exe"
+    start /wait python-installer.exe /quiet InstallAllUsers=1 PrependPath=1
+    del python-installer.exe
+)
+
+REM Check if pip is installed
+python -m pip --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Pip is not installed. Installing pip...
+    python -m ensurepip
+)
+
+REM Check if required libraries are installed
+python -c "import tkinter" 2>nul
+if %errorlevel% neq 0 (
+    echo Installing required libraries...
+    python -m pip install tk
+)
+
+python -c "import pynput" 2>nul
+if %errorlevel% neq 0 (
+    python -m pip install pynput
+)
+
+python -c "import winshell" 2>nul
+if %errorlevel% neq 0 (
+    python -m pip install winshell
+)
+
+python -c "import pywin32" 2>nul
+if %errorlevel% neq 0 (
+    python -m pip install pywin32
+)
+
+REM Run the Python script
+pythonw V:\cheatroblox\indexx.py
